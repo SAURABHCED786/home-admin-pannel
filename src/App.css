@@ -1,0 +1,9 @@
+.App {
+  text-align: center;
+}
+
+.loginFrom {
+  width: 40%;
+  display: inline-block;
+  margin-top: 60px;
+}
