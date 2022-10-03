@@ -38,7 +38,7 @@ function Forms() {
 
   const handleSubmit = () => {
     setSpinner(true);
-    if (username !== "admin" && password !== "password123") {
+    if (username !== "admin" || password !== "password123") {
       toggleuserActive(true);
       setTimeout(() => setSpinner(false), 2000)
       return

@@ -1,8 +1,9 @@
-import { Page, Card, DataTable, Pagination, Select, Stack } from '@shopify/polaris';
+import { Page, Card, DataTable, Pagination, Select, Button, Grid, Loading } from '@shopify/polaris';
 import React, { useEffect, useState } from 'react';
 
 function GridTable() {
   const [ActivePage, setActivePage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const [SelectRowPerPage, setSelectRowPerPage] = useState(5);
   const [viewTable, setViewTable] = useState([]);
   let tokenData = JSON.parse(sessionStorage.getItem("tokenData"));
@@ -44,7 +45,6 @@ function GridTable() {
           }
           temp.push(arr);
         });
-        console.log(temp,"temp");
         setViewTable(temp);
       });
 
@@ -54,47 +54,57 @@ function GridTable() {
   const handleSelectChange = ((value) => {
     setSelectRowPerPage(value)
   });
+  const toggleIsLoading = () => {
+    setIsLoading((isLoading) => !isLoading)
+  }
+
   const options = [
     { label: 'Row Per Page:5', value: '5' },
     { label: 'Row Per Page:10', value: '10' },
     { label: 'Row Per Page:15', value: '15' },
     { label: 'Row Per Page:20', value: '20' },
-
   ];
 
+  const loadingMarkup = isLoading ? <Loading /> : null;
   // Table Row
-
-
- 
-
-
 
   return (
 
     <Page title="">
+      {loadingMarkup}
       <Card>
-        <Stack>
-          <Pagination
-            label={ActivePage}
-            hasPrevious
-            onPrevious={() => {
-              setActivePage(ActivePage - 1)
-              if (ActivePage < 1) {
-                setActivePage(1)
-              }
-            }}
-            hasNext
-            onNext={() => {
-              setActivePage(ActivePage + 1)
-            }}
-          />
-          <Select
-            options={options}
-            onChange={handleSelectChange}
-            value={SelectRowPerPage}
-          />
-        </Stack>
-
+        <Grid columns={{ xs: 3, sm: 4, md: 4, lg: 3, xl: 3 }}>
+          <Grid.Cell columnSpan={{ xs: 1, sm: 2, md: 2, lg: 1, xl: 1 }}>
+            <Pagination
+              label={ActivePage}
+              hasPrevious
+              onPrevious={() => {
+                setActivePage(ActivePage - 1)
+                toggleIsLoading()
+                if (ActivePage < 1) {
+                  setActivePage(1)
+                }
+              }}
+              hasNext
+              onNext={() => {
+                toggleIsLoading()
+                setActivePage(ActivePage + 1)
+              }}
+            />
+          </Grid.Cell>
+          <Grid.Cell olumnSpan={{ xs: 12, sm: 3, md: 2, lg: 2, xl: 2}}>
+            <Select
+              options={options}
+              onChange={handleSelectChange}
+              value={SelectRowPerPage}
+            />
+          </Grid.Cell>
+          <Grid.Cell olumnSpan={{ xs: 1, sm: 3, md: 3, lg: 4, xl: 4 }}>
+            <Button slim>
+              View Columns
+            </Button>
+          </Grid.Cell>
+        </Grid>
         <DataTable
           columnContentTypes={[
             "numeric",
@@ -110,7 +120,7 @@ function GridTable() {
           rows={viewTable}
         />
       </Card>
-    </Page>
+    </Page >
   );
 }
 
