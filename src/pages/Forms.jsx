@@ -55,7 +55,7 @@ function Forms() {
             jQuerycode();
             // { replace: true, state: { message: data.message, token: data.data.token } }
             sessionStorage.setItem("tokenData", JSON.stringify(data));
-            setTimeout(() => (navigate("/home")), 2000);
+            setTimeout(() => (navigate("/dashboard")), 2000);
           } else {
             setSpinner(false);
           }

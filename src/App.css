@@ -11,3 +11,7 @@
 h1.Polaris-Header-Title {
   text-align: left;
 }
+
+.card {
+  margin-bottom: 2px;
+}

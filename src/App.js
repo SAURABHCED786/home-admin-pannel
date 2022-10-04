@@ -7,8 +7,8 @@ import { AppProvider } from '@shopify/polaris';
 import Container from 'react-bootstrap/Container';
 import './App.css';
 import Forms from './pages/Forms';
-import Home from './pages/Home';
 import Products from "./pages/Products";
+import Dashboard from "./pages/Dashboard";
 function App() {
   return (
     <div className="App">
@@ -17,7 +17,7 @@ function App() {
           <Container>
             <Routes>
               <Route exact path="/" element={<Forms />} />
-              <Route path="/home" element={<Home />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
             </Routes>
           </Container>

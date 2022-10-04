@@ -27,7 +27,7 @@ import { useState, useCallback, useRef} from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import GridTable from './GridTable';
 
-function Home() {
+function Dashboard() {
   let navigate = useNavigate();
   let { state } = useLocation()
   console.log(state);
@@ -362,4 +362,4 @@ function Home() {
     </div>
   );
 }
-export default Home
+export default Dashboard
