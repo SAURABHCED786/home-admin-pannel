@@ -7,3 +7,7 @@
   display: inline-block;
   margin-top: 60px;
 }
+
+h1.Polaris-Header-Title {
+  text-align: left;
+}

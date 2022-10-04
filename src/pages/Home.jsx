@@ -23,7 +23,7 @@ import {
   OrdersMajor,
   ConversationMinor,
 } from '@shopify/polaris-icons';
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef} from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import GridTable from './GridTable';
 
@@ -111,7 +111,7 @@ function Home() {
     [],
   );
   const toggleIsLoading = useCallback(
-    () => setIsLoading((isLoading) => !isLoading),
+    () => setIsLoading((isLoading) => isLoading),
     [],
   );
   const toggleModalActive = useCallback(
@@ -186,7 +186,7 @@ function Home() {
             url: '/',
             label: 'Back to Login',
             icon: ArrowLeftMinor,
-            selected: false
+            selected: false,
           },
         ]}
       />
@@ -195,11 +195,14 @@ function Home() {
         title="Cedcommerce App"
         items={[
           {
+            url: '/home',
             label: 'Dashboard',
             icon: HomeMajor,
             onClick: toggleIsLoading,
+            selected: true,
           },
           {
+            url: '/products',
             label: 'Products',
             icon: ProductsMajor,
             onClick: toggleIsLoading,
@@ -251,20 +254,18 @@ function Home() {
   );
 
   const loadingPageMarkup = (
-    <SkeletonPage title="Saurabh" >
+    <SkeletonPage title=' '>
       <Layout>
         <Layout.Section>
-          <Card sectioned>
             <TextContainer>
               <GridTable />
             </TextContainer>
-          </Card>
         </Layout.Section>
       </Layout>
     </SkeletonPage>
   );
 
-  const pageMarkup = isLoading ? loadingPageMarkup : actualPageMarkup;
+  const pageMarkup = isLoading ? actualPageMarkup : loadingPageMarkup;
 
   const modalMarkup = (
     <Modal
