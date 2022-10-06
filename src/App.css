@@ -15,3 +15,23 @@ h1.Polaris-Header-Title {
 .card {
   margin-bottom: 2px;
 }
+
+.usrDetaModal {
+  text-align: left;
+}
+
+label.Polaris-Choice {
+  margin-top: 0px !important;
+  margin-left: 10px;
+  margin-right: 0px;
+}
+
+.Polaris-TextContainer b:after {
+  content: " : ";
+  margin-right: 1px;
+}
+
+span.Polaris-Checkbox {
+  height: 14px;
+  width: 14px;
+}
