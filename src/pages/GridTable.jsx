@@ -17,6 +17,7 @@ import {
   Checkbox,
   Link,
   Form,
+  ProgressBar,
 } from '@shopify/polaris';
 import React, { useEffect, useState } from 'react';
 
@@ -27,7 +28,7 @@ function GridTable() {
   const [SelectRowPerPage, setSelectRowPerPage] = useState(5);
   const [viewTable, setViewTable] = useState([]);
   const [val, setVal] = useState([]);
-  const [opt, setOpt] = useState([]);
+  const [opt, setOpt] = useState(["1"]);
   const [active, setActive] = useState(false);
   const [userDetail, setUserDetail] = useState([]);
   const [checked, setChecked] = useState([]);
@@ -43,7 +44,17 @@ function GridTable() {
     { label: "Ends With", value: "6" },
   ];
 
+  const [loaders, setLoaders] = useState({
+    gridLoader: false,
+  })
+
   const filterarr = ["user_id", "", "shops.domain", "shops.email", "shops.plan_name", "", "", "shops.myshopify_domain"];
+
+  function loaderHandler(type = '', value = false) {
+    let tempLoaders = loaders;
+    tempLoaders[type] = value;
+    setLoaders(tempLoaders);
+  }
 
   function handelFilter() {
     let filterData = ''
@@ -124,6 +135,7 @@ function GridTable() {
   useEffect(() => {
     const temp = [];
     console.log(filters, "filters");
+    loaderHandler('gridLoader', true);
     fetch(`https://fbapi.sellernext.com/frontend/admin/getAllUsers?activePage=${ActivePage}&count=${SelectRowPerPage}${filters}`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${Token}` },
@@ -150,6 +162,7 @@ function GridTable() {
           temp.push(arr);
         });
         setViewTable(temp);
+        loaderHandler('gridLoader', false);
       });
 
 
@@ -207,40 +220,54 @@ function GridTable() {
 
               </Grid.Cell>
               <Grid.Cell columnSpan={{ xs: 2, sm: 2, md: 2, lg: 4, xl: 4 }}>
-                <Button onClick={() => {
-                  toggleIsLoading(false)
-                  setOpt([])
-                  setVal([])
-                  setActivePage(1)
-                  setSelectRowPerPage(5)
-                  setFiterData("")
-                }} slim>
-                  Reset
-                </Button>
+                <div className="resetBtn">
+                  <Button onClick={() => {
+                    toggleIsLoading(false)
+                    setOpt([])
+                    setVal([])
+                    setActivePage(1)
+                    setSelectRowPerPage(5)
+                    setFiterData("")
+                  }} slim>
+                    Reset
+                  </Button>
+                </div>
               </Grid.Cell>
             </Grid>
           </Card>
-          <Card sectioned>
-            <DataTable
-              columnContentTypes={[
-                "numeric",
-                "text",
-                "text",
-                "text",
-                "text",
-                "text",
-                "text",
-                "text",
-                "text"
-              ]}
-              headings={head}
-              rows={viewTable}
-            />
-          </Card>
+          {loaders.gridLoader ? (
+            <Grid>
+              <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 12, xl: 12 }}>
+                <div className="progressBar">
+                  <div style={{ width: "100%", textAlign: "end" }}>
+                    <ProgressBar progress={100} />
+                  </div>
+                </div>
+              </Grid.Cell>
+            </Grid>
+          ) : (
+            <Card sectioned>
+              <DataTable
+                columnContentTypes={[
+                  "numeric",
+                  "text",
+                  "text",
+                  "text",
+                  "text",
+                  "text",
+                  "text",
+                  "text",
+                  "text"
+                ]}
+                headings={head}
+                rows={viewTable}
+              />
+            </Card>
+          )
+          }
         </div>
         {totalUser ? (
           <>
-
             <div style={{ height: '100px' }}>
               <Modal
                 open={active}

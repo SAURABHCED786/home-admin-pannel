@@ -125,7 +125,7 @@ function Dashboard() {
 
   const userMenuActions = [
     {
-      items: [{ content: 'Community forums' }],
+      items: [{ content: 'Logout' }],
     },
   ];
 
