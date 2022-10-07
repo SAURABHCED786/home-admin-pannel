@@ -28,7 +28,7 @@ function GridTable() {
   const [SelectRowPerPage, setSelectRowPerPage] = useState(5);
   const [viewTable, setViewTable] = useState([]);
   const [val, setVal] = useState([]);
-  const [opt, setOpt] = useState(["1"]);
+  const [opt, setOpt] = useState([]);
   const [active, setActive] = useState(false);
   const [userDetail, setUserDetail] = useState([]);
   const [checked, setChecked] = useState([]);
@@ -36,6 +36,7 @@ function GridTable() {
   let tokenData = JSON.parse(sessionStorage.getItem("tokenData"));
   let Token = tokenData.data.token
   const option = [
+    { label: "Select Filter", value: "" },
     { label: "Equals", value: "1" },
     { label: "Not Equals", value: "2" },
     { label: "Contains", value: "3" },
@@ -59,12 +60,14 @@ function GridTable() {
   function handelFilter() {
     let filterData = ''
     filterarr.map((fdata, i) => {
-
       if ((val[i] !== '' && val[i] !== undefined) || (opt[i] !== '' && opt[i] !== undefined)) {
         filterData += `&filter[${fdata}][${opt[i]}] = ${val[i]}`;
-        setFiterData(filterData);
         setActivePage(1)
+      } 
+      if(val[i] === "" || opt[i]=== ""){
+        filterData = ""
       }
+      setFiterData(filterData);
     })
     toggleIsLoading(true);
   }

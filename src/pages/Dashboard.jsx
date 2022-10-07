@@ -15,15 +15,15 @@ import {
   TextField,
   Toast,
   TopBar,
+  Button,
 } from '@shopify/polaris';
 import {
   ArrowLeftMinor,
   HomeMajor,
   ProductsMajor,
-  OrdersMajor,
   ConversationMinor,
 } from '@shopify/polaris-icons';
-import { useState, useCallback, useRef} from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import GridTable from './GridTable';
 
@@ -36,7 +36,6 @@ function Dashboard() {
     nameFieldValue: 'Cedcommerce',
   });
   const skipToContentRef = useRef(null);
-
   const [toastActive, setToastActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
@@ -71,10 +70,10 @@ function Dashboard() {
     setIsDirty(false);
   }, []);
 
+ 
   const handleSave = useCallback(() => {
     defaultState.current.nameFieldValue = nameFieldValue;
     defaultState.current.emailFieldValue = emailFieldValue;
-
     setIsDirty(false);
     setToastActive(true);
     setStoreName(defaultState.current.nameFieldValue);
@@ -122,11 +121,14 @@ function Dashboard() {
   const toastMarkup = toastActive ? (
     <Toast onDismiss={toggleToastActive} content="Changes saved" />
   ) : null;
-
+  function logOut() {
+    sessionStorage.removeItem('tokenData');
+    navigate('/');
+  }
   const userMenuActions = [
     {
-      items: [{ content: 'Logout' }],
-    },
+      items: [{ content: (<Button size='slim' onClick={logOut}>Logout</Button>) }]
+    }
   ];
 
   const contextualSaveBarMarkup = isDirty ? (
@@ -146,7 +148,7 @@ function Dashboard() {
       actions={userMenuActions}
       name="Ced Store"
       detail={storeName}
-      initials="D"
+      initials="C"
       open={userMenuActive}
       onToggle={toggleUserMenuActive}
     />
@@ -257,9 +259,9 @@ function Dashboard() {
     <SkeletonPage title=' '>
       <Layout>
         <Layout.Section>
-            <TextContainer>
-              <GridTable />
-            </TextContainer>
+          <TextContainer>
+            <GridTable />
+          </TextContainer>
         </Layout.Section>
       </Layout>
     </SkeletonPage>
