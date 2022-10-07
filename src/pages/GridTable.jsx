@@ -52,8 +52,10 @@ function GridTable() {
       if ((val[i] !== '' && val[i] !== undefined) || (opt[i] !== '' && opt[i] !== undefined)) {
         filterData += `&filter[${fdata}][${opt[i]}] = ${val[i]}`;
         setFiterData(filterData);
+        setActivePage(1)
       }
     })
+    toggleIsLoading(true);
   }
 
   const handleChange = (index) => {
@@ -118,11 +120,7 @@ function GridTable() {
       }
     }
   })
-  const resetColumens = () => {
-    setVal("");
-    setOpt("");
-    setFiterData("");
-  }
+
   useEffect(() => {
     const temp = [];
     console.log(filters, "filters");
@@ -209,32 +207,40 @@ function GridTable() {
 
               </Grid.Cell>
               <Grid.Cell columnSpan={{ xs: 2, sm: 2, md: 2, lg: 4, xl: 4 }}>
-                <Button onClick={resetColumens} slim>
-                  View Columns
+                <Button onClick={() => {
+                  toggleIsLoading(false)
+                  setOpt([])
+                  setVal([])
+                  setActivePage(1)
+                  setSelectRowPerPage(5)
+                  setFiterData("")
+                }} slim>
+                  Reset
                 </Button>
               </Grid.Cell>
             </Grid>
           </Card>
+          <Card sectioned>
+            <DataTable
+              columnContentTypes={[
+                "numeric",
+                "text",
+                "text",
+                "text",
+                "text",
+                "text",
+                "text",
+                "text",
+                "text"
+              ]}
+              headings={head}
+              rows={viewTable}
+            />
+          </Card>
         </div>
         {totalUser ? (
           <>
-            <Card sectioned>
-              <DataTable
-                columnContentTypes={[
-                  "numeric",
-                  "text",
-                  "text",
-                  "text",
-                  "text",
-                  "text",
-                  "text",
-                  "text",
-                  "text"
-                ]}
-                headings={head}
-                rows={viewTable}
-              />
-            </Card>
+
             <div style={{ height: '100px' }}>
               <Modal
                 open={active}
